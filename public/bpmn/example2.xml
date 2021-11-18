@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:pm="http://processmaker.com/BPMN/2.0/Schema.xsd" xmlns:tns="http://sourceforge.net/bpmn/definitions/_1530553328908" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.11.1" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL http://bpmn.sourceforge.net/schemas/BPMN20.xsd">
+  <bpmn:process id="contrato_aprobacion_process_1" name="Aprobación de contrato" isExecutable="true">
+    <bpmn:task id="node_1" name="Aprobación de contrato" pm:screenRef="1" pm:allowInterstitial="false" pm:dueIn="24" pm:assignment="user_group" pm:assignedUsers="2" pm:assignedGroups="" pm:assignmentLock="false" pm:allowReassignment="false">
+      <bpmn:incoming>node_4</bpmn:incoming>
+      <bpmn:outgoing>node_7</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:startEvent id="node_2" name="Start Event" pm:allowInterstitial="false">
+      <bpmn:outgoing>node_4</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="node_4" name="" sourceRef="node_2" targetRef="node_1" />
+    <bpmn:exclusiveGateway id="node_5" name="¿Contrato Aprobado?">
+      <bpmn:incoming>node_7</bpmn:incoming>
+      <bpmn:outgoing>node_13</bpmn:outgoing>
+      <bpmn:outgoing>node_19</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="node_7" name="" sourceRef="node_1" targetRef="node_5" />
+    <bpmn:endEvent id="node_16" name="Mensaje y fin del flujo">
+      <bpmn:incoming>node_19</bpmn:incoming>
+      <bpmn:messageEventDefinition messageRef="no_aprobado" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="node_17" name="Fin del flujo">
+      <bpmn:incoming>node_13</bpmn:incoming>
+      <bpmn:messageEventDefinition messageRef="approve_message" />
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="node_13" name="Aprobado" sourceRef="node_5" targetRef="node_17">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">$aprobado</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="node_19" name="No aprobado" sourceRef="node_5" targetRef="node_16">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">!$aprobado </bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmn:message id="no_aprobado" name="Contrato no aprobado" />
+  <bpmn:message id="approve_message" name="Contrato aprobado" />
+  <bpmndi:BPMNDiagram id="BPMNDiagramId">
+    <bpmndi:BPMNPlane id="BPMNPlaneId" bpmnElement="contrato_aprobacion_process_1">
+      <bpmndi:BPMNEdge id="node_19_di" bpmnElement="node_19">
+        <di:waypoint x="558" y="138" />
+        <di:waypoint x="558" y="328" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="541" y="223" width="64" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="node_13_di" bpmnElement="node_13">
+        <di:waypoint x="558" y="138" />
+        <di:waypoint x="728" y="138" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="620" y="113" width="47" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="node_7_di" bpmnElement="node_7">
+        <di:waypoint x="368" y="138" />
+        <di:waypoint x="558" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="node_4_di" bpmnElement="node_4">
+        <di:waypoint x="188" y="138" />
+        <di:waypoint x="368" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="node_1_di" bpmnElement="node_1">
+        <dc:Bounds x="310" y="100" width="116" height="76" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_2_di" bpmnElement="node_2">
+        <dc:Bounds x="170" y="120" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="160" y="156" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_5_di" bpmnElement="node_5" isMarkerVisible="true">
+        <dc:Bounds x="540" y="120" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="532" y="156" width="53" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_16_di" bpmnElement="node_16">
+        <dc:Bounds x="540" y="310" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="516" y="346" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="node_17_di" bpmnElement="node_17">
+        <dc:Bounds x="710" y="120" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="700" y="156" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
