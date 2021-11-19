@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const path = require('path');
+const VueLoaderPlugin = require('vue-loader/lib/plugin');
 // require('laravel-mix-alias');
 /*
  |--------------------------------------------------------------------------
@@ -14,30 +15,17 @@ const path = require('path');
 
 mix.js('resources/js/app.js', 'public/js')
     .webpackConfig({
-        module: {
-            rules: [
-                // ... other rules omitted
-
-                // this will apply to both plain `.scss` files
-                // AND `<style lang="scss">` blocks in `.vue` files
-                {
-                    test: /\.scss$/,
-                    use: [
-                        'sass-loader'
-                    ]
-                },
-            ],
-        },
+        plugins: [new VueLoaderPlugin()]
     })
     .vue({
-        extractVueStyles: true,
-        globalVueStyles: 'resources/js/assets/scss/settings/_settings.variables.scss',
+        globalStyles: 'resources/scss/index.scss',
     })
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss'),
         require('autoprefixer'),
     ]);
+
 // .sass('resources/js/components/modeler/assets/scss/index.scss', 'public/css')
 mix.alias({
     '@': 'resources/js',
