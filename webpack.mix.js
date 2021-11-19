@@ -15,10 +15,55 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
 
 mix.js('resources/js/app.js', 'public/js')
     .webpackConfig({
-        plugins: [new VueLoaderPlugin()]
+        plugins: [new VueLoaderPlugin()],
+        module: {
+            rules: [
+                {
+                    test: /\.bpmnlintrc$/,
+                    use: 'bpmnlint-loader',
+                },
+                {
+                    test: /\.vue$/,
+                    loader: 'vue-loader',
+                },
+                {
+                    test: /\.js$/,
+                    loader: 'babel-loader',
+                    exclude: /node_modules/,
+                },
+            ]
+        },
+        externals: (() => {
+            const externals = [];
+            if (process.env.NODE_ENV === 'production') {
+                externals.push(
+                    'vue',
+                    /^bootstrap\/.+$/,
+                    /^@processmaker\/(?!processmaker-bpmn-moddle).+$/,
+                    /^@fortawesome\/.+$/,
+                    'jointjs',
+                    'i18next',
+                    '@panter/vue-i18next',
+                    'luxon',
+                    'lodash',
+                    'bpmn-moddle',
+                );
+            }
+            return externals;
+        })(),
+        resolve: {
+            extensions: ['.js', '.vue', '.json'],
+            modules: [
+                path.resolve(__dirname, 'node_modules'),
+                'node_modules',
+            ],
+            symlinks: false,
+        },
+        devtool: 'source-map',
     })
     .vue({
         globalStyles: 'resources/scss/index.scss',
+
     })
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
