@@ -55,13 +55,15 @@ export default {
     controls() {
       return this.nodeTypes
         .filter(nodeType => nodeType.control)
-        .map(nodeType => ({
+        .map(nodeType => {
+         return {
           type: nodeType.id,
-          icon: nodeType.icon,
+          icon: nodeType.icon.default,
           label: nodeType.label,
           bpmnType: nodeType.bpmnType,
           rank: nodeType.rank || BOTTOM,
-        }))
+        }
+        })
         .sort((node1, node2) => node1.rank - node2.rank);
     },
   },

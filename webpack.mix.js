@@ -31,6 +31,17 @@ mix.js('resources/js/app.js', 'public/js')
                     loader: 'babel-loader',
                     exclude: /node_modules/,
                 },
+                {
+                    test: /\.(png|jpg|gif)$/i,
+                    use: [
+                        {
+                            loader: 'url-loader',
+                            options: {
+                                limit: 8192,
+                            },
+                        },
+                    ],
+                },
             ]
         },
         externals: (() => {

@@ -4,7 +4,7 @@
     <b-card no-body class="h-100 rounded-0">
       <b-card-header class="d-flex align-items-center header">
         <b-card-text class="m-0 font-weight-bolder">
-          {{ $t('ProcessMaker Modeler') }}
+          {{ $t('ProcessMaker Modele') }}
         </b-card-text>
 
         <div class="ml-auto">
