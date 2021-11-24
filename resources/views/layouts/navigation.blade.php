@@ -21,8 +21,12 @@
                     <x-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks*')">
                         Tareas
                     </x-nav-link>
-                    <x-nav-link :href="route('designer.index')" :active="request()->routeIs('designer*')">
-                        Diseñador
+                    <x-nav-link :href="route('process.index')"
+                        :active="request()->routeIs('designer*') || request()->routeIs('process*')">
+                        Procesos
+                    </x-nav-link>
+                    <x-nav-link :href="route('screens.index')" :active="request()->routeIs('screens*')">
+                        Screens
                     </x-nav-link>
                 </div>
             </div>

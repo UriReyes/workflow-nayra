@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\Arworkflow\DesignerController;
 use App\Http\Controllers\Arworkflow\ProcessController;
 use App\Http\Controllers\Arworkflow\RequestController;
+use App\Http\Controllers\Arworkflow\ScreenController;
 use App\Http\Controllers\Arworkflow\TaskController;
+use App\Http\Controllers\Arworkflow\UserController;
 use App\Models\Arworkflow\Screen;
 use App\Models\Arworkflow\Task;
 use Illuminate\Support\Facades\Route;
@@ -30,12 +33,19 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware(['auth'])->group(function () {
+    // API
+    Route::get('process/{process}/xml', [ProcessController::class, 'getXML'])->name('process.getXML');
+    Route::get('screens/get-forms', [ScreenController::class, 'getForms'])->name('screens.getForms');
+    Route::get('users/get', [UserController::class, 'getUsers'])->name('users.get');
+
+    // Routes
     Route::post('requests/complete/{request}/{token}', [RequestController::class, 'complete'])->name('requests.complete');
     Route::resource('requests', RequestController::class);
-
     Route::get('tasks/{task}/{requestId}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
     Route::resource('tasks', TaskController::class)->except(['edit']);
-    Route::resource('designer', ProcessController::class);
+    Route::resource('process', ProcessController::class);
+    Route::resource('designer', DesignerController::class);
+    Route::resource('screens', ScreenController::class);
 });
 
 Route::get('/start', function () {

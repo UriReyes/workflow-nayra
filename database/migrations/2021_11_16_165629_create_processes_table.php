@@ -16,9 +16,13 @@ class CreateProcessesTable extends Migration
         Schema::create('processes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->text('description');
             $table->unsignedBigInteger('user_id');
             $table->boolean('archive')->default(false);
+            $table->longText('bpmn')->nullable();
+            $table->longText('svg')->nullable();
+            $table->boolean('isValidModel')->default(false);
             $table->timestamps();
 
             //Constraints

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Arworkflow;
 
 use App\Http\Controllers\Controller;
+use App\Models\Arworkflow\Process;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProcessController extends Controller
 {
@@ -14,7 +16,8 @@ class ProcessController extends Controller
      */
     public function index()
     {
-        return view('Arworkflow.Designer.index');
+        $processes = Process::select('id', 'name', 'user_id', 'created_at', 'updated_at')->get();
+        return view('Arworkflow.Process.index', compact('processes'));
     }
 
     /**
@@ -24,7 +27,7 @@ class ProcessController extends Controller
      */
     public function create()
     {
-        //
+        return view('Arworkflow.Process.create');
     }
 
     /**
@@ -35,7 +38,24 @@ class ProcessController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:800',
+        ]);
+
+        $request->query->set('slug', Str::slug($request->name));
+        $request->validate([
+            'slug' => 'unique:processes,slug'
+        ]);
+
+        $logged_user = auth()->user();
+        $process = Process::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'user_id' => $logged_user->id,
+            'slug' => $request->slug,
+        ]);
+        return redirect()->route('designer.edit', ['designer' => $process->id])->with('success', 'Proceso Creado');
     }
 
     /**
@@ -72,6 +92,7 @@ class ProcessController extends Controller
         //
     }
 
+
     /**
      * Remove the specified resource from storage.
      *
@@ -81,5 +102,11 @@ class ProcessController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    //API
+    public function getXML(Process $process)
+    {
+        return response()->json(['xml' => $process->config], 200);
     }
 }

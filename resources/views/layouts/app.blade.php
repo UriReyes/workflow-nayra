@@ -17,6 +17,11 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <!-- Scripts -->
+    <script defer>
+        window.Laravel = {
+            csrfToken: '{{ csrf_token() }}'
+        }
+    </script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 
@@ -25,14 +30,15 @@
         @include('layouts.navigation')
 
         <!-- Page Heading -->
-        <header class="bg-white shadow">
+        {{-- <header class="bg-white shadow">
             <div class="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
                 {{ $header }}
             </div>
-        </header>
+        </header> --}}
 
         <!-- Page Content -->
         <main>
+            {{-- @include('layouts._alerts') --}}
             {{ $slot }}
         </main>
     </div>

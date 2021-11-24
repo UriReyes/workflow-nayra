@@ -1,8 +1,7 @@
 <template>
-  <b-container id="modeler-app" class="container p-0 h-100 position-relative">
-
+  <b-container fluid id="modeler-app" class="container-fluid p-0 h-100 position-relative">
     <b-card no-body class="h-100 rounded-0">
-      <b-card-header class="d-flex align-items-center header">
+      <!-- <b-card-header class="d-flex align-items-center header">
         <b-card-text class="m-0 font-weight-bolder">
           {{ $t('ProcessMaker Modele') }}
         </b-card-text>
@@ -13,9 +12,9 @@
             {{ $t('Upload XML') }}
           </b-btn>
         </div>
-      </b-card-header>
+      </b-card-header> -->
       <b-card-body class="p-0 overflow-hidden position-relative vh-100">
-        <modeler ref="modeler" @set-xml-manager="xmlManager = $event" @validate="validationErrors = $event" @warnings="warnings = $event" :decorations="decorations" />
+        <modeler :processId="processId" ref="modeler" @set-xml-manager="xmlManager = $event" @validate="validationErrors = $event" @warnings="warnings = $event" :decorations="decorations" />
       </b-card-body>
       <validation-status ref="validationStatus"
         :validation-errors="validationErrors"
@@ -73,6 +72,7 @@ export default {
       xmlFile: [],
       warnings: [],
       xmlManager: null,
+      processId: window.processIdentifier,
     };
   },
   watch: {
@@ -105,13 +105,13 @@ export default {
 </script>
 
 <style lang="scss">
-body,
-html {
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  max-width: 100vw;
-  height: 100vh;
-  max-height: 100vh;
-}
+// body,
+// html {
+//   margin: 0;
+//   padding: 0;
+//   width: 100vw;
+//   max-width: 100vw;
+//   height: 100vh;
+//   max-height: 100vh;
+// }
 </style>

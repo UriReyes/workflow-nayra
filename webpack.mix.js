@@ -13,7 +13,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/js/modelerApp.js', 'public/js')
     .webpackConfig({
         plugins: [new VueLoaderPlugin()],
         module: {
@@ -70,7 +70,6 @@ mix.js('resources/js/app.js', 'public/js')
             ],
             symlinks: false,
         },
-        devtool: 'source-map',
     })
     .vue({
         globalStyles: 'resources/scss/index.scss',
@@ -81,6 +80,7 @@ mix.js('resources/js/app.js', 'public/js')
         require('tailwindcss'),
         require('autoprefixer'),
     ]);
+
 
 // .sass('resources/js/components/modeler/assets/scss/index.scss', 'public/css')
 mix.alias({

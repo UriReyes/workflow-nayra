@@ -3,12 +3,15 @@ require('./bootstrap');
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
-
+window.axios = require('axios');
 Alpine.start();
 
 window.Vue = require('vue').default;
 
-// VUE
+window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['X-CSRF-TOKEN'] = window.Laravel.csrfToken;
+
+// Modeler App renderizada y adaptada desde Vue CLI
 import Vue from 'vue';
 import i18next from 'i18next';
 import VueI18Next from '@panter/vue-i18next';
@@ -23,7 +26,11 @@ import ScreenBuilder from '@processmaker/screen-builder';
 import Multiselect from '@processmaker/vue-multiselect/src/Multiselect';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import Toasted from 'vue-toasted';
 
+Vue.use(Toasted, {
+    iconPack: 'fontawesome' // set your iconPack, defaults to material. material|fontawesome|custom-class
+});
 Vue.use(BootstrapVue);
 Vue.use(VueDeepSet);
 Vue.use(VueI18Next);
@@ -41,9 +48,12 @@ Vue.mixin({ i18n: new VueI18Next(i18next) });
 new Vue({
     render: h => h(ModelerApp),
 }).$mount('#app');
+window.ProcessMaker.EventBus.$on('modeler-change', () => {
+    console.log('The diagram has changed');
+});
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-// const app = new Vue({
-//     el: '#app',
-// });
+//Renderizar otros componentes de vue
+Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+const app = new Vue({
+    el: '#app-vue',
+});
