@@ -13,10 +13,10 @@
             <div class="bg-white border-b border-gray-200">
                 <div id="app"></div>
                 {{-- <div id="app-vue">
-                        <example-component />
-                    </div> --}}
+                    <example-component />
+                </div> --}}
             </div>
         </div>
     </div>
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/modelador.js') }}"></script>
 </x-app-layout>
