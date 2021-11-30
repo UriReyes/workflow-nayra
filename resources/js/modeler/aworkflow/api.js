@@ -10,7 +10,7 @@ export const retrieveXMLDesignOfProcess = async (processId) => {
     }
 }
 
-export const saveProcess = async (processId, bpmn, svg) => {
+export const saveProcess = async (processId, bpmn, svg, existErrors) => {
     const url = `${BASE_URL}/designer/${processId}`;
     const response = await fetch(url, {
         mode: 'cors', // this cannot be 'no-cors'
@@ -20,7 +20,7 @@ export const saveProcess = async (processId, bpmn, svg) => {
             'Content-Type': 'application/json',
         },
         method: 'PUT',
-        body: JSON.stringify({ bpmn, svg })
+        body: JSON.stringify({ bpmn, svg, existErrors })
     });
     const data = await response.json();
     return data;

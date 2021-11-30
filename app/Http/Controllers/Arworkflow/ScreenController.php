@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Arworkflow;
 use App\Http\Controllers\Controller;
 use App\Models\Arworkflow\Screen;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ScreenController extends Controller
 {
@@ -15,7 +16,8 @@ class ScreenController extends Controller
      */
     public function index()
     {
-        return view('Arworkflow.Screens.index');
+        $screens = Screen::get();
+        return view('Arworkflow.Screens.index', compact('screens'));
     }
 
     /**
@@ -25,7 +27,7 @@ class ScreenController extends Controller
      */
     public function create()
     {
-        //
+        return view('Arworkflow.Screens.create');
     }
 
     /**
@@ -36,7 +38,24 @@ class ScreenController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:800',
+        ]);
+
+        $request->query->set('slug', Str::slug($request->name));
+        $request->validate([
+            'slug' => 'unique:screens,slug'
+        ]);
+
+        $logged_user = auth()->user();
+        $screen = Screen::create([
+            'title' => $request->name,
+            'description' => $request->description,
+            'user_id' => $logged_user->id,
+            'slug' => $request->slug,
+        ]);
+        return redirect()->route('screens.builder', ['screen' => $screen->id])->with('success', 'Screen Creado');
     }
 
     /**
@@ -68,9 +87,15 @@ class ScreenController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Screen $screen)
     {
-        //
+        $screen->update([
+            'config' => $request->savedConfig,
+            'computed' => $request->computed,
+            'custom_css' => $request->customCSS,
+            'watchers' => $request->savedWatchers
+        ]);
+        return response()->json(['success' => true, 'message' => 'Screen almacenado']);
     }
 
     /**
@@ -84,6 +109,16 @@ class ScreenController extends Controller
         //
     }
 
+    public function screenBuilder(Screen $screen)
+    {
+        return view('Arworkflow.Screens.builder', compact('screen'));
+    }
+
+    //API Methods
+    public function getForm(Screen $screen)
+    {
+        return response()->json(['screen' => $screen]);
+    }
     public function getForms()
     {
         $forms = Screen::select('id', 'title')->where('type', 'FORM')->orderByDesc('id')->get();

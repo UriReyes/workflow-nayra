@@ -17,6 +17,7 @@ class CreateTasksTable extends Migration
             $table->id();
             $table->string('task_nayra_id');
             $table->string('name');
+            $table->string('status', 20);
             $table->json('config');
             $table->json('rules')->nullable();
             $table->json('notifications')->nullable();

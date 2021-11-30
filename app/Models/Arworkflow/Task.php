@@ -17,6 +17,6 @@ class Task extends Model
     public function getFormularioRenderizado($token, $instance)
     {
         $url = route('requests.complete', ['request' => $instance->getId(), 'token' => $token]);
-        return $this->interpretar($this->config, $url);
+        return $this->interpretar($this->config, $url, $instance->getDataStore()->getData());
     }
 }

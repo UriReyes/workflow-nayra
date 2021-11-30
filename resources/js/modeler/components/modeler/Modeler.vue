@@ -1104,12 +1104,22 @@ export default {
         },
         async saveInBackend(processId, bpmn, svg) {
             try {
-                const {success} = await saveProcess(processId, bpmn, svg);
-                this.$toasted.clear();
-                this.$toasted.success(success, { duration:1500,  icon : { name : 'check' } });
+                const errors = await this.linter.lint(this.definitions);
+                const existErrors =Object.keys(errors).length > 0 ? true : false;
+                if(existErrors){
+                    this.$toasted.clear();
+                    this.$toasted.info('El modelado contiene errores de validación', { duration:1500,  icon : { name : 'exclamation' } });    
+                    saveProcess(processId, bpmn, svg, existErrors);
+                }else{
+                    console.log('no');
+                    const {success} = await saveProcess(processId, bpmn, svg, existErrors);
+                    this.$toasted.clear();
+                    this.$toasted.success(success, { duration:1500,  icon : { name : 'check' } });
+                }
+                window.diagramHasChanges = false;
             } catch (error) {
                 this.$toasted.clear();
-                this.$toasted.success(error, { duration:1500,  icon : { name : 'times' } });
+                this.$toasted.error(error, { duration:3000,  icon : { name : 'times' } });
             }
         },
     },

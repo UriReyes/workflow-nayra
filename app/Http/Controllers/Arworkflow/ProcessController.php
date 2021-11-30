@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Arworkflow;
 
 use App\Http\Controllers\Controller;
 use App\Models\Arworkflow\Process;
+use App\Models\Arworkflow\Screen;
+use App\Models\Arworkflow\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use ProcessMaker\Laravel\Facades\Nayra;
 
 class ProcessController extends Controller
 {
@@ -16,7 +19,7 @@ class ProcessController extends Controller
      */
     public function index()
     {
-        $processes = Process::select('id', 'name', 'user_id', 'created_at', 'updated_at')->get();
+        $processes = Process::select('id', 'name', 'description', 'isValidModel', 'user_id', 'created_at', 'updated_at')->get();
         return view('Arworkflow.Process.index', compact('processes'));
     }
 
@@ -102,6 +105,30 @@ class ProcessController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function start(Process $process)
+    {
+        if ($process->isValidModel) {
+            $bpmn = $process->bpmn_path;
+            // dd(file_get_contents($bpmn));
+            $request = Nayra::startProcess($bpmn, "node_1", ['contrato_archivo' => 'contrato.pdf']);
+            $tasks = Nayra::tasks($request->getId());
+            foreach ($tasks as $task) {
+                $element = $task->getOwnerElement();
+                $formScreen = $element->getProperty('screenRef');
+                $screen = Screen::find($formScreen);
+                Task::create([
+                    'task_nayra_id' => $task->getId(),
+                    'status' => $task->getStatus(),
+                    'name' => $element->getName(),
+                    'config' => $screen,
+                ]);
+            }
+            return response()->json(['message' => 'Proceso iniciado'], 200);
+        } else {
+            return response()->json(['message' => 'No se puede iniciar este proceso'], 404);
+        }
     }
 
     //API

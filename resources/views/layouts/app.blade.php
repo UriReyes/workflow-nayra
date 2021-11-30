@@ -21,6 +21,7 @@
         window.Laravel = {
             csrfToken: '{{ csrf_token() }}'
         }
+        window.APP_URL = @json(config('app.url'));
     </script>
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>

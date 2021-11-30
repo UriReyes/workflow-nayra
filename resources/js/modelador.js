@@ -36,7 +36,10 @@ Vue.mixin({ i18n: new VueI18Next(i18next) });
 
 new Vue({
     render: h => h(ModelerApp),
-}).$mount('#app');
+}).$mount('#app-modeler');
+
+window.diagramHasChanges = false;
 window.ProcessMaker.EventBus.$on('modeler-change', () => {
     console.log('The diagram has changed');
+    window.diagramHasChanges = true;
 });

@@ -15,13 +15,18 @@ class CreateScreensTable extends Migration
     {
         Schema::create('screens', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
+            $table->string('title');
+            $table->string('slug')->unique();
             $table->text('description');
             $table->string('type', 20)->default('FORM');
             $table->json('config')->nullable();
             $table->json('computed')->nullable();
             $table->text('custom_css')->nullable();
+            $table->text('watchers')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onupdate('cascade');
         });
     }
 

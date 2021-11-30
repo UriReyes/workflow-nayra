@@ -1,5 +1,5 @@
 <template>
-  <b-container class="h-100" id="screen-builder-container">
+  <b-container fluid class="h-100 p-0" id="screen-builder-container">
     <b-card no-body class="bg-white border-top-0 h-100" id="app">
       <!-- Card Header -->
       <b-card-header>
@@ -33,7 +33,7 @@
             <b-btn variant="secondary" size="sm" v-b-modal="'uploadmodal'" class="mr-2" :title="$t('Load Screen')">
               <i class="mr-1 fas fa-upload"/>
             </b-btn>
-            <button v-b-modal.preview-config type="button" @click="saveToLocalStorage()" class="ml-1 btn btn-secondary btn-sm" :title="$t('Save Screen')"><i class="fas fa-save"/></button>
+            <button v-b-modal.preview-config type="button" @click="saveToServer()" class="ml-1 btn btn-secondary btn-sm" :title="$t('Save Screen')"><i class="fas fa-save"/></button>
           </b-col>
           <b-modal
             ref="uploadmodal"
@@ -211,6 +211,9 @@ import controlConfig from './form-builder-controls';
 import globalProperties from './global-properties';
 
 import Validator from 'validatorjs';
+
+// API Methods
+import { saveFormScreen, loadFormScreen } from './aworkflow/api';
 
 // To include another language in the Validator with variable processmaker
 let globalObject = typeof window === 'undefined'
@@ -409,7 +412,8 @@ export default {
       );
     });
 
-    this.loadFromLocalStorage();
+    // this.loadFromLocalStorage();
+    this.loadFromServer();
   },
   methods: {
     countElements() {
@@ -448,7 +452,7 @@ export default {
       if (customCSS) {
         this.customCSS = customCSS;
       }
-      
+
       if (computed) {
         this.computed = JSON.parse(computed);
       }
@@ -458,6 +462,53 @@ export default {
       localStorage.setItem('savedWatchers', JSON.stringify(this.watchers));
       localStorage.setItem('customCSS', this.customCSS);
       localStorage.setItem('computed', JSON.stringify(this.computed));
+    },
+    async loadFromServer() {
+      try {
+        const {screen} = await loadFormScreen(window.screenGlobalId);
+        const {
+          config:savedConfig,
+          watchers:savedWatchers,
+          custom_css:customCSS,
+          computed
+        } = screen;
+        if (savedConfig) {
+          let config = JSON.parse(savedConfig);
+          this.$refs.builder.config = config;
+          this.$refs.builder.migrateConfig();
+        }
+        if (savedWatchers) {
+          let watcherConfig = JSON.parse(savedWatchers);
+          this.watchers = watcherConfig;
+        }
+
+        if (customCSS) {
+          this.customCSS = customCSS;
+        }
+
+        if (computed) {
+          this.computed = JSON.parse(computed);
+        }
+      } catch (error) {
+        this.$toasted.clear();
+        this.$toasted.error(error, { duration:3000,  icon : { name : 'times' } });
+      }
+    },
+    async saveToServer(){
+      try {
+        const data = {
+        savedConfig: JSON.stringify(this.config),
+        savedWatchers: JSON.stringify(this.watchers),
+        customCSS: this.customCSS,
+        computed: JSON.stringify(this.computed)
+      }
+      const response = await saveFormScreen(window.screenGlobalId,data);
+      this.$toasted.clear();
+      this.$toasted.success(response.message, { duration:1500,  icon : { name : 'check' } });
+      } catch (error) {
+        this.$toasted.clear();
+        this.$toasted.error(error, { duration:3000,  icon : { name : 'times' } });
+      }
     },
     editorDidMount(editor) {
       editor.getAction('editor.action.formatDocument').run();
@@ -601,7 +652,7 @@ export default {
     .modal-backdrop {
       opacity: 0.5;
     }
-    
+
     .form-group--error {
       animation: none;
     }

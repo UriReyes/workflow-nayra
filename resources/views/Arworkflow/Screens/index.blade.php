@@ -10,7 +10,7 @@
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <!-- This example requires Tailwind CSS v2.0+ -->
-                    {{-- <div class="grid grid-cols-12 mb-4">
+                    <div class="grid grid-cols-12 mb-4">
                         <a class="w-full col-span-2 col-start-11 p-1 text-center text-white bg-green-600 border-green-900 border-solid rounded-sm cursor-pointer hover:bg-green-700"
                             title="Añadir screen" href="{{ route('screens.create') }}"><i class="fas fa-plus"></i>
                             Screen</a>
@@ -45,20 +45,58 @@
                                             </tr>
                                         </thead>
                                         <tbody class="bg-white divide-y divide-gray-200">
+                                            @foreach ($screens as $screen)
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="flex items-center">
+                                                            <div class="flex-shrink-0 w-10 h-10">
+                                                                <img class="w-10 h-10 rounded-full"
+                                                                    src="https://i.pravatar.cc/300" alt="">
+                                                            </div>
+                                                            <div class="ml-4">
+                                                                <div class="text-sm font-medium text-gray-900">
+                                                                    {{ $screen->created_by->name }}
+                                                                </div>
+                                                                <div class="text-sm text-gray-500">
+                                                                    {{ $screen->created_by->email }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-900">
+                                                            {{ $screen->title }}
+                                                        </div>
+                                                        <div class="text-sm text-gray-500">
+                                                            {{ Str::limit($screen->description, 15, '...') }}
+                                                        </div>
+                                                    </td>
+                                                    <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                                        {{ $screen->created_at->format('m-d-Y h:i A') }}
+                                                    </td>
+                                                    <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
+                                                        {{ $screen->updated_at->format('m-d-Y h:i A') }}
+                                                    </td>
+                                                    <td
+                                                        class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                                        <a href="{{ route('screens.builder', ['screen' => $screen->id]) }}"
+                                                            class="text-blue-600 hover:text-indigo-900"
+                                                            title="Editar Diseño">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+
+                                            <!-- More people... -->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-                    </div> --}}
-                    <div id="app-screen-builder" style="height:100vh; overflow:scroll"></div>
-                    {{-- <div id="app"></div>
-                    <div id="app-vue">
-                        <example-component />
-                    </div> --}}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <script src="{{ asset('js/constructorFormularios.js') }}"></script>
 </x-app-layout>

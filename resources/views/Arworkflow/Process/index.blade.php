@@ -84,6 +84,13 @@
                                                             title="Editar Diseño">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
+                                                        @if ($process->isValidModel)
+                                                            <button class="text-green-500 hover:text-green-700"
+                                                                title="Start"
+                                                                onclick="confirmStartProcess(event,'{{ $process->id }}')">
+                                                                <i class="fas fa-play"></i>
+                                                            </button>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -104,4 +111,40 @@
         </div>
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            window.confirmStartProcess = (event, processId) => {
+                Swal.fire({
+                    title: '¿Iniciar proceso?',
+                    text: "Esto creará una nueva instancia",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí',
+                    cancelButtonText: 'No'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let url = `${APP_URL}/process/${processId}/start`;
+                        fetch(url, {
+                                mode: 'cors', // this cannot be 'no-cors'
+                                headers: {
+                                    'X-CSRF-TOKEN': window.Laravel.csrfToken,
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json',
+                                },
+                                method: 'POST',
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log(data);
+                            })
+                            .catch(error => console.log);
+
+                    }
+                })
+            }
+        })
+    </script>
 </x-app-layout>

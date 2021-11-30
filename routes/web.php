@@ -33,8 +33,9 @@ Route::get('/dashboard', function () {
 
 
 Route::middleware(['auth'])->group(function () {
-    // API
+    // API Routes
     Route::get('process/{process}/xml', [ProcessController::class, 'getXML'])->name('process.getXML');
+    Route::get('screens/{screen}/get-form', [ScreenController::class, 'getForm'])->name('screens.getForm');
     Route::get('screens/get-forms', [ScreenController::class, 'getForms'])->name('screens.getForms');
     Route::get('users/get', [UserController::class, 'getUsers'])->name('users.get');
 
@@ -43,8 +44,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('requests', RequestController::class);
     Route::get('tasks/{task}/{requestId}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
     Route::resource('tasks', TaskController::class)->except(['edit']);
+    Route::post('process/{process}/start', [ProcessController::class, 'start'])->name('process.start');
     Route::resource('process', ProcessController::class);
     Route::resource('designer', DesignerController::class);
+    Route::get('screens/builder/{screen}', [ScreenController::class, 'screenBuilder'])->name('screens.builder');
     Route::resource('screens', ScreenController::class);
 });
 

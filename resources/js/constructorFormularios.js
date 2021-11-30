@@ -13,6 +13,11 @@ import axios from 'axios';
 import TestComponents from './screen-builder/tests/components';
 import BootstrapVue from 'bootstrap-vue';
 import Multiselect from '@processmaker/vue-multiselect/src/Multiselect';
+import Toasted from 'vue-toasted';
+
+Vue.use(Toasted, {
+    iconPack: 'fontawesome' // set your iconPack, defaults to material. material|fontawesome|custom-class
+});
 
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
@@ -230,20 +235,21 @@ window.Echo = {
     },
 };
 
-const scenario = (window.location.search.substr(1).match(/\w+=(\w+)/) || [])[1];
-if (scenario) {
-    if (!TestComponents[scenario]) {
-        // eslint-disable-next-line no-console
-        console.error(`Not found tests/components/${scenario}.vue`);
-    } else {
-        new Vue({
-            store,
-            render: h => h(TestComponents[scenario]),
-        }).$mount('#app-screen-builder');
-    }
-} else {
-    new Vue({
-        store,
-        render: h => h(App),
-    }).$mount('#app-screen-builder');
-}
+// const scenario = (window.location.search.substr(1).match(/\w+=(\w+)/) || [])[1];
+// if (scenario) {
+//     if (!TestComponents[scenario]) {
+//         // eslint-disable-next-line no-console
+//         console.error(`Not found tests/components/${scenario}.vue`);
+//     } else {
+//         new Vue({
+//             store,
+//             render: h => h(TestComponents[scenario]),
+//         }).$mount('#app-screen-builder');
+//     }
+// } else {
+// }
+
+new Vue({
+    store,
+    render: h => h(App),
+}).$mount('#app-screen-builder');

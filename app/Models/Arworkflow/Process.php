@@ -10,7 +10,64 @@ class Process extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $appends = ['created_by'];
+    protected $appends = ['created_by', 'bpmn_content', 'bpmn_path', 'svg_content', 'svg_path'];
+
+    public function getBpmnContentAttribute()
+    {
+        try {
+            $path = $this->bpmnPath();
+            $content = file_get_contents($path);
+            return $content;
+        } catch (\Throwable $th) {
+            return null;
+        }
+    }
+
+    public function getBpmnPathAttribute()
+    {
+        try {
+            return $this->bpmnPath();
+        } catch (\Throwable $th) {
+            return null;
+        }
+    }
+
+    private function bpmnPath()
+    {
+        $processName = $this->slug;
+        $bpmnFile = $this->bpmn;
+        $path = public_path("storage/workflow/process/{$processName}/{$bpmnFile}");
+        return $path;
+    }
+
+
+    public function getSvgContentAttribute()
+    {
+        try {
+            $path = $this->svgPath();
+            $content = file_get_contents($path);
+            return $content;
+        } catch (\Throwable $th) {
+            return null;
+        }
+    }
+
+    public function getSvgPathAttribute()
+    {
+        try {
+            return $this->svgPath();
+        } catch (\Throwable $th) {
+            return null;
+        }
+    }
+
+    private function svgPath()
+    {
+        $processName = $this->slug;
+        $svgFile = $this->svg;
+        $path = public_path("storage/workflow/svg/{$processName}/{$svgFile}");
+        return $path;
+    }
 
     public function getCreatedByAttribute()
     {
