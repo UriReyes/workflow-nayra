@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Arworkflow;
 
 use App\Http\Controllers\Controller;
+use App\Models\Arworkflow\Screen;
 use App\Models\Arworkflow\Task;
 use Illuminate\Http\Request;
 use ProcessMaker\Laravel\Facades\Nayra;
@@ -64,6 +65,7 @@ class TaskController extends Controller
     {
         $instance = Nayra::getInstanceById($requestId);
         $task = Task::where('task_nayra_id', $token)->first();
+
         return view('Arworkflow.Tasks.edit', compact('task', 'instance', 'token'));
     }
 

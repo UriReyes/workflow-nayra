@@ -6,6 +6,8 @@ use App\Http\Controllers\Arworkflow\RequestController;
 use App\Http\Controllers\Arworkflow\ScreenController;
 use App\Http\Controllers\Arworkflow\TaskController;
 use App\Http\Controllers\Arworkflow\UserController;
+use App\Http\Controllers\ContractController;
+use App\Http\Controllers\ContractTypeController;
 use App\Models\Arworkflow\Screen;
 use App\Models\Arworkflow\Task;
 use Illuminate\Support\Facades\Route;
@@ -39,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('screens/get-forms', [ScreenController::class, 'getForms'])->name('screens.getForms');
     Route::get('users/get', [UserController::class, 'getUsers'])->name('users.get');
 
-    // Routes
+    // Routes Workflow
     Route::post('requests/complete/{request}/{token}', [RequestController::class, 'complete'])->name('requests.complete');
     Route::resource('requests', RequestController::class);
     Route::get('tasks/{task}/{requestId}/edit', [TaskController::class, 'edit'])->name('tasks.edit');
@@ -49,6 +51,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('designer', DesignerController::class);
     Route::get('screens/builder/{screen}', [ScreenController::class, 'screenBuilder'])->name('screens.builder');
     Route::resource('screens', ScreenController::class);
+
+    // Independent System
+    Route::resource('contract', ContractController::class);
+    Route::resource('contract-type', ContractTypeController::class);
 });
 
 Route::get('/start', function () {

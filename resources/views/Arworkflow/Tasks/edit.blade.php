@@ -10,7 +10,17 @@
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <p>
-                        {!! $task->getFormularioRenderizado($token, $instance) !!}@csrf</form>
+                        @if ($task)
+                            {!! $task->getFormularioRenderizado($token, $instance) !!}@csrf</form>
+                        @else
+                            @php
+                                $url = route('requests.complete', ['request' => $instance->getId(), 'token' => $token]);
+                            @endphp
+                            <form action="{{ $url }}" method="POST">
+                                @csrf
+                                <button type="submit" class="p-3 text-white bg-green-500 rounded btn">Completar</button>
+                            </form>
+                        @endif
                     </p>
                 </div>
             </div>

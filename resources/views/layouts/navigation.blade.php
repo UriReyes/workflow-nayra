@@ -28,6 +28,12 @@
                     <x-nav-link :href="route('screens.index')" :active="request()->routeIs('screens*')">
                         Screens
                     </x-nav-link>
+                    <x-nav-link :href="route('contract-type.index')" :active="request()->routeIs('contract-type*')">
+                        Tipos de contrato
+                    </x-nav-link>
+                    <x-nav-link :href="route('contract.index')" :active="request()->routeIs('contract*')">
+                        <i class="mr-2 fas fa-file-contract"></i>Contratos
+                    </x-nav-link>
                 </div>
             </div>
 

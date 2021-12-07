@@ -39,6 +39,7 @@ new Vue({
 }).$mount('#app-modeler');
 
 window.diagramHasChanges = false;
+window.ProcessMaker.modeler.signalPermissions = true;
 window.ProcessMaker.EventBus.$on('modeler-change', () => {
     console.log('The diagram has changed');
     window.diagramHasChanges = true;

@@ -43,7 +43,7 @@ trait InterpreteDeFormulario
                 return $componente;
                 break;
             case 'FileDownload':
-                $componente = "<div class='form-group'><a class='form-control' name='{$base_configuration["name"]}'><i class='{$base_configuration["icon"]}'></i>{$base_configuration["label"]}</a></div>";
+                $componente = "<div class='form-group'><a href='{$data['archivo']}' target='_blank' class='form-control' name='{$base_configuration["name"]}'><i class='{$base_configuration["icon"]}'></i>{$base_configuration["label"]}</a></div>";
                 return $componente;
                 break;
             case 'FormCheckbox':

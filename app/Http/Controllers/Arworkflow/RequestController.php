@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Arworkflow;
 
 use App\Http\Controllers\Controller;
 use App\Models\Arworkflow\Request as ArworkflowRequest;
+use App\Models\Arworkflow\Screen;
+use App\Models\Arworkflow\Task;
 use Illuminate\Http\Request;
 use ProcessMaker\Laravel\Facades\Nayra;
 
@@ -102,7 +104,21 @@ class RequestController extends Controller
             }
         }
         // Complete Task
+
         $arwokflowrequestObject = Nayra::completeTask($arwokflowrequest, $token, $data);
+
+        $tasks = Nayra::tasks($arwokflowrequestObject->getId());
+        foreach ($tasks as $task) {
+            $element = $task->getOwnerElement();
+            $formScreen = $element->getProperty('screenRef');
+            $screen = Screen::find($formScreen);
+            Task::create([
+                'task_nayra_id' => $task->getId(),
+                'status' => $task->getStatus(),
+                'name' => $element->getName(),
+                'config' => $screen ? $screen : '',
+            ]);
+        }
         return redirect()->route('requests.show', $arwokflowrequestObject->getId());
     }
 }
