@@ -9,9 +9,12 @@
         </div>
 
         <input id="name" type="name" name="name" autocomplete="off" value="{{ old('name', $contract->name) }}"
-            class="w-full py-2 pl-10 pr-4 text-sm placeholder-gray-500 border border-gray-400 rounded focus:outline-none focus:border-blue-400"
+            class="w-full py-2 pl-10 pr-4 text-sm placeholder-gray-500 border border-gray-400 rounded focus:outline-none focus:border-blue-400 {{ $errors->has('name') ? 'border-red-600' : '' }}"
             placeholder="" />
     </div>
+    @error('name')
+        <span class="text-xs text-red-600">{{ $message }}</span>
+    @enderror
 </div>
 <div class="flex flex-col mb-5">
     <label for="description" class="mb-1 text-xs tracking-wide text-gray-600">Descripción</label>
@@ -20,12 +23,18 @@
             <i class="text-blue-500 fas fa-pen"></i>
         </div>
         <textarea id="description" name="description"
-            class="w-full py-2 pl-10 pr-4 text-sm placeholder-gray-500 border border-gray-400 rounded focus:outline-none focus:border-blue-400">{{ old('description', $contract->description) }}</textarea>
+            class="w-full py-2 pl-10 pr-4 text-sm placeholder-gray-500 border border-gray-400 rounded focus:outline-none focus:border-blue-400 {{ $errors->has('description') ? 'border-red-600' : '' }}">{{ old('description', $contract->description) }}</textarea>
     </div>
+    @error('description')
+        <span class="text-xs text-red-600">{{ $message }}</span>
+    @enderror
 </div>
 <div class="flex flex-col mb-5">
     <label for="">Archivo</label>
-    <input type="file" name="file" />
+    <input type="file" name="file" class="{{ $errors->has('description') ? 'border-red-600' : '' }}" />
+    @error('file')
+        <span class="text-xs text-red-600">{{ $message }}</span>
+    @enderror
 </div>
 {{-- <div class="flex flex-col mb-5">
     <label for="">Estatus</label>

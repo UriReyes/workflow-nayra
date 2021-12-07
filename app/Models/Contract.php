@@ -27,7 +27,7 @@ class Contract extends Model
         'user_id',
     ];
 
-    protected $appends = ['path_contract'];
+    protected $appends = ['path_contract', 'svg_process'];
 
     public function author()
     {
@@ -42,6 +42,12 @@ class Contract extends Model
     public function getPathContractAttribute()
     {
         $path = '/storage/contratos/' . $this->file;
+        return $path;
+    }
+
+    public function getSVGProcessAttribute()
+    {
+        $path = asset('storage/workflow/svg/' . $this->type->process->slug . '/' . $this->type->process->svg);
         return $path;
     }
 }

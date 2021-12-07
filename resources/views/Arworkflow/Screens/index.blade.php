@@ -13,7 +13,7 @@
                     <div class="grid grid-cols-12 mb-4">
                         <a class="w-full col-span-2 col-start-11 p-1 text-center text-white bg-green-600 border-green-900 border-solid rounded-sm cursor-pointer hover:bg-green-700"
                             title="Añadir screen" href="{{ route('screens.create') }}"><i class="fas fa-plus"></i>
-                            Screen</a>
+                            Formulario</a>
                     </div>
                     <hr>
                     <div class="flex flex-col">

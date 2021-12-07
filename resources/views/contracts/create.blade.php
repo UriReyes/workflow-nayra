@@ -13,7 +13,7 @@
                         <div
                             class="flex flex-col w-full max-w-md px-4 py-8 bg-white shadow-md sm:px-6 md:px-8 lg:px-10 rounded-3xl">
                             <div class="self-center text-xl font-medium text-gray-800 sm:text-3xl">
-                                Tipo de contratos
+                                Crear Contrato
                             </div>
                             <div class="self-center mt-4 text-xl text-gray-800 sm:text-sm">
                                 Ingresa la siguiente información
@@ -23,7 +23,6 @@
                                 <form action="{{ route('contract.store') }}" method="POST"
                                     enctype="multipart/form-data">
                                     @csrf
-                                    @dump($errors)
                                     @include('contracts._form')
                                 </form>
                             </div>

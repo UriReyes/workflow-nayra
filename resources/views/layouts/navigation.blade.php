@@ -26,7 +26,7 @@
                         Procesos
                     </x-nav-link>
                     <x-nav-link :href="route('screens.index')" :active="request()->routeIs('screens*')">
-                        Screens
+                        Formularios
                     </x-nav-link>
                     <x-nav-link :href="route('contract-type.index')" :active="request()->routeIs('contract-type*')">
                         Tipos de contrato

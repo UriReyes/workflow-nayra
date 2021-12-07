@@ -27,7 +27,11 @@
                                                 <tr>
                                                     <th scope="col"
                                                         class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
-                                                        Propietario
+                                                        Nombre
+                                                    </th>
+                                                    <th scope="col"
+                                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                                                        Descripción
                                                     </th>
                                                     <th scope="col"
                                                         class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
@@ -51,11 +55,6 @@
                                                     <tr>
                                                         <td class="px-6 py-4 whitespace-nowrap">
                                                             <div class="flex items-center">
-                                                                <div class="flex-shrink-0 w-10 h-10">
-                                                                    <img class="w-10 h-10 rounded"
-                                                                        src="https://cdn-icons.flaticon.com/png/512/2347/premium/2347792.png?token=exp=1638392436~hmac=a43e7eecce889e9699e2ae3a198b485e"
-                                                                        alt="">
-                                                                </div>
                                                                 <div class="ml-4">
                                                                     <div class="text-sm font-medium text-gray-900">
                                                                         {{ $type->name }}
@@ -67,6 +66,9 @@
                                                             <div class="text-sm text-gray-900">
                                                                 {{ Str::limit($type->description, 50, '...') }}
                                                             </div>
+                                                        </td>
+                                                        <td class="px-6 py-4 text-gray-500 whitespace-nowrap">
+                                                            {{ $type->process->name }}
                                                         </td>
                                                         <td class="px-6 py-4 text-sm text-gray-500 whitespace-nowrap">
                                                             {{ $type->created_at->format('m-d-Y h:i A') }}

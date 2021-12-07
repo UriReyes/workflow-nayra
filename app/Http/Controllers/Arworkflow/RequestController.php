@@ -19,7 +19,9 @@ class RequestController extends Controller
     public function index()
     {
         $requests = ArworkflowRequest::select('id', 'status', 'tokens')->where('status', '!=', 'COMPLETED')->orderByDesc('id')->paginate(5);
-        return view('Arworkflow.Requests.index', compact('requests'));
+        $requests_completed = ArworkflowRequest::select('id', 'status', 'tokens')->where('status', 'COMPLETED')->orderByDesc('id')->paginate(5);
+
+        return view('Arworkflow.Requests.index', compact('requests', 'requests_completed'));
     }
 
     /**

@@ -12,7 +12,7 @@ class Request extends Model
 {
     use HasFactory;
 
-    protected $appends = ['instance', 'request'];
+    protected $appends = ['instance', 'request', 'svg_process'];
 
     protected $casts = [
         'data' => 'array',
@@ -39,5 +39,12 @@ class Request extends Model
     {
         $request = NayraRequest::find($this->id);
         return $request;
+    }
+
+    public function getSVGProcessAttribute()
+    {
+        $path = asset('storage/workflow/svg/' . $this->slug . '/' . $this->svg);
+
+        return $path;
     }
 }
